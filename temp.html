@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home Automation 1.00 - Water</title>
+    <style>
+      @font-face {
+        font-family: 'League Gothic';
+        src: url('fonts/leaguegothic-condensedregular.eot');
+        src: url('fonts/leaguegothic-condensedregular.eot?#iefix') format('embedded-opentype'),
+             url('fonts/leaguegothic-condensedregular.woff2') format('woff2'),
+             url('fonts/leaguegothic-condensedregular.woff') format('woff'),
+             url('fonts/leaguegothic-condensedregular.ttf') format('truetype'),
+             url('fonts/leaguegothic-condensedregular.svg#league_gothicCnRg') format('svg');
+        font-weight: normal;
+        font-style: normal;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: #000;
+      }
+      .svg {
+        display: block;
+        position: absolute;
+        top: 5%;
+        left: 5%;
+        width: 90%;
+        height: 90%;
+      }
+    </style>
+    <script src="js/jquery-2.2.3.min.js"></script>
+    <script>
+      // code from: https://jwatt.org/svg/demos/getSVGDocument.html
+      function getSVGDocument(selector) {
+        var svgDocs = $(selector);
+        var svgDoc = null;
+        var svgRoot = null;
+
+        if (svgDocs.length >= 1) {
+          svgDoc = svgDocs[0];
+          if (svgDoc.contentDocument) {
+            svgRoot = svgDoc.contentDocument;
+          } else {
+            try {
+              svgRoot = svgDoc.getSVGDocument();
+            }
+            catch (exception) {
+              // ignore errors
+            }
+          }
+        }
+
+        return svgRoot;
+      }
+      // code from: https://benfrain.com/selecting-svg-inside-tags-with-javascript/
+      $(window).load(function() {
+        var svgRoot = getSVGDocument(".svg");
+        if (svgRoot) {
+          $(".btnWater", svgRoot).on("click", function() {
+            location.href = 'index.html'
+          });
+          $(".btnTemp", svgRoot).on("click", function() {
+            location.href = 'temp.html'
+          });
+          $(".btnUp", svgRoot).on("click", function() {
+            $(".txtTemp", svgRoot)[0].firstChild.innerHTML = "10.1";
+            $(".txtHumidity", svgRoot)[0].firstChild.innerHTML = "10.2";
+            $(".txtSetTemp", svgRoot)[0].firstChild.innerHTML = "10.3";
+            alert("btnUp");
+          });
+          $(".btnDown", svgRoot).on("click", function() {
+            alert("btnDown");
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <object class="svg" data="temp.svg" type="image/svg+xml">
+      Your browser doesn't support SVG
+    </object>
+  </body>
+</html>
