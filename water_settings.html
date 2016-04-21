@@ -70,6 +70,11 @@
       // code from: https://benfrain.com/selecting-svg-inside-tags-with-javascript/
       $(window).load(function() {
         var svgRoot = getSVGDocument(".svg");
+        var minHour = 0;
+        var maxHour = 23;
+        var minMinute = 0;
+        var maxMinute = 59;
+
         if (svgRoot) {
           $(".btnWater", svgRoot).on("click", function() {
             location.href = 'index.html'
@@ -98,20 +103,71 @@
           $(".btnSunday", svgRoot).on("click", function() {
             alert("btnSunday");
           });
-          $(".txtFromH1", svgRoot).on("click", function() {
-            var nextNum = parseInt($(".txtFromH1", svgRoot)[0].firstChild.innerHTML) + 1;
-            nextNum = (nextNum >= 10) ? nextNum - 10 : nextNum;
-            $(".txtFromH1", svgRoot)[0].firstChild.innerHTML = nextNum;
+          $(".btnFromHUp", svgRoot).on("click", function() {
+            var time = $(".txtFrom", svgRoot)[0].firstChild.innerHTML;
+            var arTime = time.split(":");
+            var nextNum = parseInt(arTime[0]) + 1;
+            arTime[0] = (nextNum > maxHour) ? minHour : nextNum;
+            arTime[0] = ("0" + arTime[0]).slice(-2);
+            $(".txtFrom", svgRoot)[0].firstChild.innerHTML = arTime.join(":");
+          });
+          $(".btnFromMUp", svgRoot).on("click", function() {
+            var time = $(".txtFrom", svgRoot)[0].firstChild.innerHTML;
+            var arTime = time.split(":");
+            var nextNum = parseInt(arTime[1]) + 1;
+            arTime[1] = (nextNum > maxMinute) ? minMinute : nextNum;
+            arTime[1] = ("0" + arTime[1]).slice(-2);
+            $(".txtFrom", svgRoot)[0].firstChild.innerHTML = arTime.join(":");
+          });
+          $(".btnToHUp", svgRoot).on("click", function() {
+            var time = $(".txtTo", svgRoot)[0].firstChild.innerHTML;
+            var arTime = time.split(":");
+            var nextNum = parseInt(arTime[0]) + 1;
+            arTime[0] = (nextNum > maxHour) ? minHour : nextNum;
+            arTime[0] = ("0" + arTime[0]).slice(-2);
+            $(".txtTo", svgRoot)[0].firstChild.innerHTML = arTime.join(":");
+          });
+          $(".btnToMUp", svgRoot).on("click", function() {
+            var time = $(".txtTo", svgRoot)[0].firstChild.innerHTML;
+            var arTime = time.split(":");
+            var nextNum = parseInt(arTime[1]) + 1;
+            arTime[1] = (nextNum > maxMinute) ? minMinute : nextNum;
+            arTime[1] = ("0" + arTime[1]).slice(-2);
+            $(".txtTo", svgRoot)[0].firstChild.innerHTML = arTime.join(":");
+          });
+          $(".btnFromHDown", svgRoot).on("click", function() {
+            var time = $(".txtFrom", svgRoot)[0].firstChild.innerHTML;
+            var arTime = time.split(":");
+            var nextNum = parseInt(arTime[0]) - 1;
+            arTime[0] = (nextNum < minHour) ? maxHour : nextNum;
+            arTime[0] = ("0" + arTime[0]).slice(-2);
+            $(".txtFrom", svgRoot)[0].firstChild.innerHTML = arTime.join(":");
+          });
+          $(".btnFromMDown", svgRoot).on("click", function() {
+            var time = $(".txtFrom", svgRoot)[0].firstChild.innerHTML;
+            var arTime = time.split(":");
+            var nextNum = parseInt(arTime[1]) - 1;
+            arTime[1] = (nextNum < minMinute) ? maxMinute : nextNum;
+            arTime[1] = ("0" + arTime[1]).slice(-2);
+            $(".txtFrom", svgRoot)[0].firstChild.innerHTML = arTime.join(":");
+          });
+          $(".btnToHDown", svgRoot).on("click", function() {
+            var time = $(".txtTo", svgRoot)[0].firstChild.innerHTML;
+            var arTime = time.split(":");
+            var nextNum = parseInt(arTime[0]) - 1;
+            arTime[0] = (nextNum < minHour) ? maxHour : nextNum;
+            arTime[0] = ("0" + arTime[0]).slice(-2);
+            $(".txtTo", svgRoot)[0].firstChild.innerHTML = arTime.join(":");
+          });
+          $(".btnToMDown", svgRoot).on("click", function() {
+            var time = $(".txtTo", svgRoot)[0].firstChild.innerHTML;
+            var arTime = time.split(":");
+            var nextNum = parseInt(arTime[1]) - 1;
+            arTime[1] = (nextNum < minMinute) ? maxMinute : nextNum;
+            arTime[1] = ("0" + arTime[1]).slice(-2);
+            $(".txtTo", svgRoot)[0].firstChild.innerHTML = arTime.join(":");
           });
           $(".btnSave", svgRoot).on("click", function() {
-            $(".txtFromH1", svgRoot)[0].firstChild.innerHTML = "1";
-            $(".txtFromH2", svgRoot)[0].firstChild.innerHTML = "2";
-            $(".txtFromM1", svgRoot)[0].firstChild.innerHTML = "3";
-            $(".txtFromM2", svgRoot)[0].firstChild.innerHTML = "4";
-            $(".txtToH1", svgRoot)[0].firstChild.innerHTML = "5";
-            $(".txtToH2", svgRoot)[0].firstChild.innerHTML = "6";
-            $(".txtToM1", svgRoot)[0].firstChild.innerHTML = "7";
-            $(".txtToM2", svgRoot)[0].firstChild.innerHTML = "8";
             alert("btnSave");
           });
         }
