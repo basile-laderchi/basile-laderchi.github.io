@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home Automation 1.00 - Water</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: #000;
+      }
+      .svg {
+        display: block;
+        position: absolute;
+        top: 5%;
+        left: 5%;
+        width: 90%;
+        height: 90%;
+      }
+    </style>
+    <script src="js/jquery-2.2.3.min.js"></script>
+    <script>
+      // code from: https://jwatt.org/svg/demos/getSVGDocument.html
+      function getSVGDocument(selector) {
+        var svgDocs = $(selector);
+        var svgDoc = null;
+        var svgRoot = null;
+
+        if (svgDocs.length >= 1) {
+          svgDoc = svgDocs[0];
+          if (svgDoc.contentDocument) {
+            svgRoot = svgDoc.contentDocument;
+          } else {
+            try {
+              svgRoot = svgDoc.getSVGDocument();
+            }
+            catch (exception) {
+              // ignore errors
+            }
+          }
+        }
+
+        return svgRoot;
+      }
+      function changeTime(oTime) {
+        var svgRoot = getSVGDocument(".svg");
+
+        var txtTime = $(oTime.timeFieldSelector, svgRoot)[0].firstChild.innerHTML;
+        var arTime = $.trim(txtTime).split(":");
+        var nextNum = parseInt(arTime[oTime.timePart]) + oTime.step;
+        var maxValue = oTime.timePart == 0 ? oTime.step == 1 ? oTime.maxHour : oTime.minHour : oTime.step == 1 ? oTime.maxMinute : oTime.minMinute;
+        var minValue = oTime.timePart == 0 ? oTime.step == 1 ? oTime.minHour : oTime.maxHour : oTime.step == 1 ? oTime.minMinute : oTime.maxMinute;
+        var condition = oTime.step == 1 ? nextNum > maxValue : nextNum < maxValue;
+        arTime[oTime.timePart] = (condition) ? minValue : nextNum;
+        arTime[oTime.timePart] = ("0" + arTime[oTime.timePart]).slice(-2);
+        $(oTime.timeFieldSelector, svgRoot)[0].firstChild.innerHTML = arTime.join(":");
+      }
+      // code from: https://benfrain.com/selecting-svg-inside-tags-with-javascript/
+      $(window).load(function() {
+        var svgRoot = getSVGDocument(".svg");
+        var oTime = {
+          minHour: 0,
+          maxHour: 23,
+          minMinute: 0,
+          maxMinute: 59
+        };
+
+        if (svgRoot) {
+          $(".btnMondayOn", svgRoot).hide();
+          $(".btnTuesdayOn", svgRoot).hide();
+          $(".btnWednesdayOn", svgRoot).hide();
+          $(".btnThursdayOn", svgRoot).hide();
+          $(".btnFridayOn", svgRoot).hide();
+          $(".btnSaturdayOn", svgRoot).hide();
+          $(".btnSundayOn", svgRoot).hide();
+
+          $(".btnWater", svgRoot).on("click", function() {
+            location.href = 'index.html'
+          });
+          $(".btnTemp", svgRoot).on("click", function() {
+            location.href = 'temp.html'
+          });
+          $(".btnMonday", svgRoot).on("click", function() {
+            $(".btnMondayOn", svgRoot).toggle();
+            $(".btnMondayOff", svgRoot).toggle();
+          });
+          $(".btnTuesday", svgRoot).on("click", function() {
+            $(".btnTuesdayOn", svgRoot).toggle();
+            $(".btnTuesdayOff", svgRoot).toggle();
+          });
+          $(".btnWednesday", svgRoot).on("click", function() {
+            $(".btnWednesdayOn", svgRoot).toggle();
+            $(".btnWednesdayOff", svgRoot).toggle();
+          });
+          $(".btnThursday", svgRoot).on("click", function() {
+            $(".btnThursdayOn", svgRoot).toggle();
+            $(".btnThursdayOff", svgRoot).toggle();
+          });
+          $(".btnFriday", svgRoot).on("click", function() {
+            $(".btnFridayOn", svgRoot).toggle();
+            $(".btnFridayOff", svgRoot).toggle();
+          });
+          $(".btnSaturday", svgRoot).on("click", function() {
+            $(".btnSaturdayOn", svgRoot).toggle();
+            $(".btnSaturdayOff", svgRoot).toggle();
+          });
+          $(".btnSunday", svgRoot).on("click", function() {
+            $(".btnSundayOn", svgRoot).toggle();
+            $(".btnSundayOff", svgRoot).toggle();
+          });
+          $(".btnFromHUp", svgRoot).longClick(function() {
+            oTime.timeFieldSelector = ".txtFrom";
+            oTime.timePart = 0;
+            oTime.step = 1;
+            changeTime(oTime);
+          });
+          $(".btnFromMUp", svgRoot).longClick(function() {
+            oTime.timeFieldSelector = ".txtFrom";
+            oTime.timePart = 1;
+            oTime.step = 1;
+            changeTime(oTime);
+          });
+          $(".btnToHUp", svgRoot).longClick(function() {
+            oTime.timeFieldSelector = ".txtTo";
+            oTime.timePart = 0;
+            oTime.step = 1;
+            changeTime(oTime);
+          });
+          $(".btnToMUp", svgRoot).longClick(function() {
+            oTime.timeFieldSelector = ".txtTo";
+            oTime.timePart = 1;
+            oTime.step = 1;
+            changeTime(oTime);
+          });
+          $(".btnFromHDown", svgRoot).longClick(function() {
+            oTime.timeFieldSelector = ".txtFrom";
+            oTime.timePart = 0;
+            oTime.step = -1;
+            changeTime(oTime);
+          });
+          $(".btnFromMDown", svgRoot).longClick(function() {
+            oTime.timeFieldSelector = ".txtFrom";
+            oTime.timePart = 1;
+            oTime.step = -1;
+            changeTime(oTime);
+          });
+          $(".btnToHDown", svgRoot).longClick(function() {
+            oTime.timeFieldSelector = ".txtTo";
+            oTime.timePart = 0;
+            oTime.step = -1;
+            changeTime(oTime);
+          });
+          $(".btnToMDown", svgRoot).longClick(function() {
+            oTime.timeFieldSelector = ".txtTo";
+            oTime.timePart = 1;
+            oTime.step = -1;
+            changeTime(oTime);
+          });
+          $(".btnSave", svgRoot).on("click", function() {
+            alert("btnSave");
+          });
+        }
+      });
+
+      // code adapter from: https://stackoverflow.com/questions/2625210/long-press-in-javascript
+      (function($) {
+        $.fn.longClick = function(callback, timeout) {
+          var timer = null;
+          var longpress = false;
+
+          timeout = timeout || 500;
+
+          $(this).on("mousedown touchstart", function() {
+            longpress = false;
+            if (timer == null) {
+              timer = setInterval(function() {
+                callback();
+                longpress = true;
+              }, timeout);
+            }
+            return false;
+          });
+          $(this).on("mouseup mouseout touchend touchleave touchcancel", function() {
+            if (timer != null) {
+              clearInterval(timer);
+              timer = null;
+            }
+            return false;
+          });
+          $(this).on("click", function() {
+            if (timer != null) {
+              clearInterval(timer);
+              timer = null;
+            }
+            if (!longpress) {
+              callback();
+            }
+            return false;
+          });
+        };
+      })(jQuery);
+    </script>
+  </head>
+  <body>
+    <object class="svg" data="monitoring_settings.svg" type="image/svg+xml">
+      Your browser doesn't support SVG
+    </object>
+  </body>
+</html>
